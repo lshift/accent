@@ -5,7 +5,7 @@
   <artifactId>accent</artifactId>
   <packaging>jar</packaging>
   <name>Accent Java Library</name>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.9</version>
   <description>A reliability layer for AMQP messaging</description>
   <url>https://github.com/lshift/accent</url>
 
