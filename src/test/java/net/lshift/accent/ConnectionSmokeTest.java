@@ -63,7 +63,7 @@ public class ConnectionSmokeTest {
 
       aConsumer.reliableAck(d.getEnvelope().getDeliveryTag(), false);
 
-      closeQuietly(aConsumer);
+      ch.close();
     } finally {
       closeQuietly(conn);
     }
