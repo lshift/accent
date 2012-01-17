@@ -42,6 +42,21 @@ public class AccentChannel implements ConnectionListener, Closeable {
   @Override
   public void close() throws IOException {
     this.connection.removeConnectionListener(this);
+
+    // Close our underlying connection
+    executeIfChannelValid(new ChannelCallback() {
+      public void runWithChannel(Channel c) throws IOException {
+        c.close();
+
+        // Invalidate the stored channel
+        channel = null;
+        
+        // Inform all listeners that the channel is lost
+        for (ChannelListener cb : setupListeners) {
+          cb.channelLost();
+        }
+      }
+    });
   }
 
   /**
@@ -131,6 +146,7 @@ public class AccentChannel implements ConnectionListener, Closeable {
   /**
    * Executes a given operation only if the channel is currently valid.
    * @param t  the operation to execute.
+   * @return an exception that was thrown, or null if the operation completed successfully.
    */
   public Exception executeIfChannelValid(final ChannelCallback t) {
     synchronized (channelStateLock) {
